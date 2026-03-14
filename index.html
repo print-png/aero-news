@@ -49,7 +49,6 @@
             border: 1px solid rgba(255,255,255,0.5); border-radius: 24px; padding: 22px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .gadget h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase; opacity: 0.6; }
         #side-clock { font-size: 42px; text-align: center; color: #2e7d32; font-weight: 200; text-shadow: 0 0 10px white; }
 
         @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } .sidebar { order: -1; } }
@@ -59,13 +58,13 @@
 
     <header class="main-header">
         <div class="logo">🍃 AeroNews Live</div>
-        <div style="color: #2e7d32; font-weight: bold; font-size: 12px; background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">NewsAPI Edition</div>
+        <div style="color: #2e7d32; font-weight: bold; font-size: 12px; background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">RSS Edition</div>
     </header>
 
     <div class="main-layout">
         <main class="news-grid" id="news-container">
             <div style="color: white; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                ⏳ Устанавливаем защищенное соединение...
+                ⏳ Подключаемся к ленте новостей...
             </div>
         </main>
 
@@ -85,51 +84,39 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. ПОЛУЧЕНИЕ НОВОСТЕЙ С ОБХОДОМ БЛОКИРОВКИ
-        const API_KEY = '7565ffb19f1c41cd8f73e52a674a86e9'; 
-        
+        // 2. ПОЛУЧЕНИЕ НОВОСТЕЙ ЧЕРЕЗ RSS-ПАРСЕР (КЛЮЧ НЕ НУЖЕН)
         async function loadNews() {
             const container = document.getElementById('news-container');
-            
-            // Используем прокси AllOrigins, чтобы обойти ошибку 426 на GitHub Pages
-            const targetUrl = `https://newsapi.org{API_KEY}`;
-            const proxyUrl = `https://api.allorigins.win{encodeURIComponent(targetUrl)}`;
+            // Берем новости из открытого RSS канала (например, Lenta.ru)
+            const rssUrl = 'https://lenta.ru';
+            const apiUrl = `https://api.rss2json.com{encodeURIComponent(rssUrl)}`;
 
             try {
-                const response = await fetch(proxyUrl);
-                const rawData = await response.json();
-                
-                // AllOrigins возвращает данные в поле contents как строку, парсим её
-                const data = JSON.parse(rawData.contents);
+                const response = await fetch(apiUrl);
+                const data = await response.json();
 
                 if (data.status === "ok") {
                     container.innerHTML = ""; 
-                    if (data.articles.length === 0) {
-                        container.innerHTML = "<div style='color:white'>Новостей на данный момент нет.</div>";
-                        return;
-                    }
-
-                    data.articles.forEach(art => {
-                        // Показываем только те новости, где есть и заголовок, и картинка
-                        if (!art.title || !art.urlToImage) return;
-
-                        const card = document.createElement('article');
-                        card.className = 'news-card';
-                        card.innerHTML = `
-                            <img src="${art.urlToImage}" class="news-img" onerror="this.src='faero.jpg'">
-                            <div class="news-body">
-                                <div class="news-title">${art.title}</div>
-                                <p class="news-text">${art.description || "Нажмите ниже, чтобы прочитать полный текст новости."}</p>
-                                <a href="${art.url}" target="_blank" style="color: #6eb300; font-size: 13px; font-weight: bold; text-decoration: none; border-bottom: 1px dashed;">Читать источник →</a>
-                            </div>
-                        `;
-                        container.innerHTML += card.outerHTML;
+                    data.items.forEach(art => {
+                        // All Origins и RSS иногда не дают картинки, ставим заглушку если пусто
+                        const img = art.enclosure.link || art.thumbnail || 'faero.jpg';
+                        
+                        const card = `
+                            <article class="news-card">
+                                <img src="${img}" class="news-img" onerror="this.src='faero.jpg'">
+                                <div class="news-body">
+                                    <div class="news-title">${art.title}</div>
+                                    <p class="news-text">${art.description.substring(0, 150)}...</p>
+                                    <a href="${art.link}" target="_blank" style="color: #6eb300; font-size: 13px; font-weight: bold; text-decoration: none; border-bottom: 1px dashed;">Читать источник →</a>
+                                </div>
+                            </article>`;
+                        container.innerHTML += card;
                     });
                 } else {
-                    container.innerHTML = `<div style="color:white; background:rgba(255,0,0,0.2); padding:20px; border-radius:15px;">Ошибка API: ${data.message}</div>`;
+                    container.innerHTML = `<div style="color:white">Ошибка загрузки ленты. Попробуйте позже.</div>`;
                 }
             } catch (e) {
-                container.innerHTML = "<div style='color:white; background:rgba(255,0,0,0.2); padding:20px; border-radius:15px;'>Прокси-сервер перегружен. Подождите 1 минуту и обновите страницу.</div>";
+                container.innerHTML = "<div style='color:white'>Не удалось подключиться к новостям. Проверьте интернет.</div>";
             }
         }
 
