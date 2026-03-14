@@ -59,13 +59,13 @@
 
     <header class="main-header">
         <div class="logo">🍃 AeroNews Live</div>
-        <div style="color: #2e7d32; font-weight: bold; font-size: 12px; background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">GNews Edition</div>
+        <div style="color: #2e7d32; font-weight: bold; font-size: 12px; background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">NewsAPI Edition</div>
     </header>
 
     <div class="main-layout">
         <main class="news-grid" id="news-container">
             <div style="color: white; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                ⏳ Подключаемся к GNews...
+                ⏳ Устанавливаем защищенное соединение...
             </div>
         </main>
 
@@ -85,43 +85,51 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. ПОЛУЧЕНИЕ НОВОСТЕЙ
-        const GNEWS_KEY = 'd7800ae3412c2bae82a6afe0566c7fc2'; 
+        // 2. ПОЛУЧЕНИЕ НОВОСТЕЙ С ОБХОДОМ БЛОКИРОВКИ
+        const API_KEY = '7565ffb19f1c41cd8f73e52a674a86e9'; 
         
         async function loadNews() {
             const container = document.getElementById('news-container');
-            // Параметры: категория general, язык ru, страна ru
-            const url = `https://gnews.io{GNEWS_KEY}`;
+            
+            // Используем прокси AllOrigins, чтобы обойти ошибку 426 на GitHub Pages
+            const targetUrl = `https://newsapi.org{API_KEY}`;
+            const proxyUrl = `https://api.allorigins.win{encodeURIComponent(targetUrl)}`;
 
             try {
-                const response = await fetch(url);
-                const data = await response.json();
+                const response = await fetch(proxyUrl);
+                const rawData = await response.json();
+                
+                // AllOrigins возвращает данные в поле contents как строку, парсим её
+                const data = JSON.parse(rawData.contents);
 
-                if (data.articles) {
+                if (data.status === "ok") {
                     container.innerHTML = ""; 
                     if (data.articles.length === 0) {
-                        container.innerHTML = "<div style='color:white'>Новостей пока нет, загляните позже!</div>";
+                        container.innerHTML = "<div style='color:white'>Новостей на данный момент нет.</div>";
                         return;
                     }
+
                     data.articles.forEach(art => {
+                        // Показываем только те новости, где есть и заголовок, и картинка
+                        if (!art.title || !art.urlToImage) return;
+
                         const card = document.createElement('article');
                         card.className = 'news-card';
                         card.innerHTML = `
-                            <img src="${art.image}" class="news-img" onerror="this.src='faero.jpg'">
+                            <img src="${art.urlToImage}" class="news-img" onerror="this.src='faero.jpg'">
                             <div class="news-body">
                                 <div class="news-title">${art.title}</div>
-                                <p class="news-text">${art.description || "Нажмите на ссылку ниже, чтобы прочитать подробности новости."}</p>
+                                <p class="news-text">${art.description || "Нажмите ниже, чтобы прочитать полный текст новости."}</p>
                                 <a href="${art.url}" target="_blank" style="color: #6eb300; font-size: 13px; font-weight: bold; text-decoration: none; border-bottom: 1px dashed;">Читать источник →</a>
                             </div>
                         `;
                         container.innerHTML += card.outerHTML;
                     });
                 } else {
-                    container.innerHTML = `<div style="color:white; background:rgba(255,0,0,0.2); padding:20px; border-radius:15px;">Ошибка API: ${data.errors ? JSON.stringify(data.errors) : 'Проверьте лимиты ключа'}</div>`;
+                    container.innerHTML = `<div style="color:white; background:rgba(255,0,0,0.2); padding:20px; border-radius:15px;">Ошибка API: ${data.message}</div>`;
                 }
             } catch (e) {
-                container.innerHTML = "<div style='color:white; background:rgba(255,0,0,0.2); padding:20px; border-radius:15px;'>Не удалось загрузить новости. Проверьте интернет-соединение.</div>";
-                console.error(e);
+                container.innerHTML = "<div style='color:white; background:rgba(255,0,0,0.2); padding:20px; border-radius:15px;'>Прокси-сервер перегружен. Подождите 1 минуту и обновите страницу.</div>";
             }
         }
 
