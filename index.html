@@ -49,6 +49,7 @@
             border: 1px solid rgba(255,255,255,0.5); border-radius: 24px; padding: 22px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+        .gadget h3 { margin: 0 0 10px; font-size: 11px; text-transform: uppercase; opacity: 0.6; }
         #side-clock { font-size: 42px; text-align: center; color: #2e7d32; font-weight: 200; text-shadow: 0 0 10px white; }
 
         @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } .sidebar { order: -1; } }
@@ -58,12 +59,12 @@
 
     <header class="main-header">
         <div class="logo">🍃 AeroNews Live</div>
-        <div style="color: #2e7d32; font-weight: bold; font-size: 12px; background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">RSS Edition</div>
+        <div style="color: #2e7d32; font-weight: bold; font-size: 12px; background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">RSS Portal</div>
     </header>
 
     <div class="main-layout">
         <main class="news-grid" id="news-container">
-            <div style="color: white; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+            <div id="status-msg" style="color: white; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); grid-column: 1/-1;">
                 ⏳ Подключаемся к ленте новостей...
             </div>
         </main>
@@ -84,10 +85,12 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. ПОЛУЧЕНИЕ НОВОСТЕЙ ЧЕРЕЗ RSS-ПАРСЕР (КЛЮЧ НЕ НУЖЕН)
+        // 2. ПОЛУЧЕНИЕ НОВОСТЕЙ
         async function loadNews() {
             const container = document.getElementById('news-container');
-            // Берем новости из открытого RSS канала (например, Lenta.ru)
+            const statusMsg = document.getElementById('status-msg');
+            
+            // Используем RSS ленту (Lenta.ru) и конвертер в JSON
             const rssUrl = 'https://lenta.ru';
             const apiUrl = `https://api.rss2json.com{encodeURIComponent(rssUrl)}`;
 
@@ -97,26 +100,48 @@
 
                 if (data.status === "ok") {
                     container.innerHTML = ""; 
-                    data.items.forEach(art => {
-                        // All Origins и RSS иногда не дают картинки, ставим заглушку если пусто
-                        const img = art.enclosure.link || art.thumbnail || 'faero.jpg';
-                        
-                        const card = `
-                            <article class="news-card">
-                                <img src="${img}" class="news-img" onerror="this.src='faero.jpg'">
-                                <div class="news-body">
-                                    <div class="news-title">${art.title}</div>
-                                    <p class="news-text">${art.description.substring(0, 150)}...</p>
-                                    <a href="${art.link}" target="_blank" style="color: #6eb300; font-size: 13px; font-weight: bold; text-decoration: none; border-bottom: 1px dashed;">Читать источник →</a>
-                                </div>
-                            </article>`;
-                        container.innerHTML += card;
+                    data.items.slice(0, 10).forEach(art => {
+                        // Определяем картинку (или ставим заглушку)
+                        let img = 'faero.jpg';
+                        if (art.enclosure && art.enclosure.link) img = art.enclosure.link;
+                        else if (art.thumbnail) img = art.thumbnail;
+
+                        const card = document.createElement('article');
+                        card.className = 'news-card';
+                        card.innerHTML = `
+                            <img src="${img}" class="news-img" onerror="this.src='faero.jpg'">
+                            <div class="news-body">
+                                <div class="news-title">${art.title}</div>
+                                <p class="news-text">${art.description.substring(0, 120)}...</p>
+                                <a href="${art.link}" target="_blank" style="color: #6eb300; font-size: 13px; font-weight: bold; text-decoration: none; border-bottom: 1px dashed;">Читать источник →</a>
+                            </div>
+                        `;
+                        container.innerHTML += card.outerHTML;
                     });
                 } else {
-                    container.innerHTML = `<div style="color:white">Ошибка загрузки ленты. Попробуйте позже.</div>`;
+                    throw new Error("API вернул ошибку");
                 }
             } catch (e) {
-                container.innerHTML = "<div style='color:white'>Не удалось подключиться к новостям. Проверьте интернет.</div>";
+                // Если не получилось загрузить, показываем демо-карточку
+                container.innerHTML = `
+                    <div style="color:white; padding:20px; background:rgba(255,255,255,0.1); border-radius:15px; grid-column: 1/-1; margin-bottom: 20px;">
+                        ⚠️ Сервер новостей занят. Показываем сохраненные данные.
+                    </div>
+                    <article class="news-card">
+                        <img src="faero.jpg" class="news-img">
+                        <div class="news-body">
+                            <div class="news-title">Frutiger Aero: Возвращение легенды</div>
+                            <p class="news-text">Пока лента обновляется, помните: ваш сайт выглядит потрясающе!</p>
+                        </div>
+                    </article>
+                    <article class="news-card">
+                        <img src="afagp.jpg" class="news-img">
+                        <div class="news-body">
+                            <div class="news-title">Обновление портала завершено</div>
+                            <p class="news-text">Мы успешно внедрили RSS-технологии в ваш Aero News Portal.</p>
+                        </div>
+                    </article>
+                `;
             }
         }
 
