@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aero News Portal — Чистый взгляд</title>
+    <title>Aero News Portal — Live</title>
     <style>
         body, html {
             margin: 0; padding: 0;
@@ -12,7 +12,7 @@
             color: #1a4d00; min-height: 100vh;
         }
 
-        /* ШАПКА САЙТА */
+        /* ШАПКА */
         .main-header {
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(20px) saturate(180%);
@@ -24,90 +24,45 @@
         }
 
         .logo { font-size: 26px; font-weight: bold; color: #2e7d32; text-shadow: 0 1px 2px white; }
-        .nav-links a { text-decoration: none; color: #1a4d00; margin-left: 25px; font-weight: 500; transition: 0.3s; padding: 5px 12px; border-radius: 15px; }
-        .nav-links a:hover { background: rgba(255,255,255,0.3); color: #000; }
-
-        /* БЕГУЩАЯ СТРОКА */
-        .marquee-box {
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-            backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding: 6px 0; color: #fff; font-size: 14px; font-weight: bold; text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-        }
-
-        /* ОСНОВНОЙ КОНТЕЙНЕР */
+        
         .main-layout { display: grid; grid-template-columns: 1fr 320px; gap: 30px; padding: 30px 5%; box-sizing: border-box; }
 
         /* СЕТКА НОВОСТЕЙ */
         .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+
         .news-card {
             background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.25) 100%);
             backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.6);
             border-radius: 22px; overflow: hidden; display: flex; flex-direction: column;
             box-shadow: 0 12px 35px rgba(0,0,0,0.15); transition: 0.4s; position: relative;
         }
-        .news-card::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 45%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.5), transparent);
-            border-radius: 22px 22px 70% 70%; pointer-events: none;
-        }
-        .news-card:hover { transform: translateY(-8px); background: rgba(255, 255, 255, 0.85); box-shadow: 0 20px 45px rgba(0,0,0,0.2); }
-        .news-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.3); }
-        .news-body { padding: 22px; position: relative; z-index: 1; }
-        .news-tag { background: linear-gradient(#c0f41a, #6eb300); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .news-title { font-size: 22px; font-weight: bold; margin: 15px 0 10px; color: #2e7d32; line-height: 1.2; }
-        .news-text { font-size: 14px; line-height: 1.6; color: #333; opacity: 0.9; }
 
-        /* БОКОВАЯ ПАНЕЛЬ */
+        .news-card:hover { transform: translateY(-8px); background: rgba(255, 255, 255, 0.85); }
+        .news-img { width: 100%; height: 180px; object-fit: cover; }
+        .news-body { padding: 22px; }
+        .news-title { font-size: 18px; font-weight: bold; color: #2e7d32; margin-bottom: 10px; }
+        .news-text { font-size: 13px; line-height: 1.5; color: #333; }
+
         .sidebar { display: flex; flex-direction: column; gap: 25px; }
         .gadget {
             background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.5); border-radius: 24px; padding: 22px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1), inset 0 0 20px rgba(255,255,255,0.4);
-            position: relative; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .gadget::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(rgba(255,255,255,0.4), transparent); border-radius: 24px 24px 50% 50%; }
-        .gadget h3 { margin: 0 0 15px 0; font-size: 11px; text-transform: uppercase; color: #1a4d00; opacity: 0.6; letter-spacing: 2px; font-weight: 800; }
-        #side-clock { font-size: 42px; text-align: center; color: #2e7d32; font-weight: 200; text-shadow: 0 0 15px white; margin: 10px 0; }
-
-        @media (max-width: 950px) { .main-layout { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+        #side-clock { font-size: 42px; text-align: center; color: #2e7d32; font-weight: 200; }
     </style>
 </head>
 <body>
 
     <header class="main-header">
-        <div class="logo">🍃 AeroNews Portal</div>
-        <nav class="nav-links">
-            <a href="index.html">Главная</a>
-            <a href="#">Новости</a>
-            <a href="#">О проекте</a>
-        </nav>
+        <div class="logo">🍃 AeroNews Live</div>
+        <div style="color: #2e7d32; font-weight: bold;">API Edition</div>
     </header>
 
-    <div class="marquee-box">
-        <marquee scrollamount="6">
-            ✨ ДОБРО ПОЖАЛОВАТЬ: Aero News Portal запущен! • ⚡ CachyOS — самая быстрая система 2026 года • 🐠 Не забудьте включить музыку на главном экране!
-        </marquee>
-    </div>
-
     <div class="main-layout">
-        <main class="news-grid">
-            <article class="news-card">
-                <img src="faero.jpg" class="news-img">
-                <div class="news-body">
-                    <span class="news-tag">Style</span>
-                    <div class="news-title">Эпоха глянца возвращается</div>
-                    <p class="news-text">Дизайнеры по всему миру отказываются от плоских интерфейсов в пользу объема и прозрачности.</p>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <img src="afagp.jpg" class="news-img">
-                <div class="news-body">
-                    <span class="news-tag">Tech</span>
-                    <div class="news-title">Ядро Linux 7.0 в CachyOS</div>
-                    <p class="news-text">Невероятная плавность интерфейса и отклик в играх. Будущее десктопа уже здесь.</p>
-                </div>
-            </article>
+        <main class="news-grid" id="news-container">
+            <!-- Новости загрузятся сюда -->
+            <div style="color: white; font-size: 20px;">Загружаем свежие новости...</div>
         </main>
 
         <aside class="sidebar">
@@ -119,12 +74,47 @@
     </div>
 
     <script>
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('side-clock').innerText = now.toLocaleTimeString();
+        // 1. ЧАСЫ
+        setInterval(() => {
+            document.getElementById('side-clock').innerText = new Date().toLocaleTimeString();
+        }, 1000);
+
+        // 2. ПОЛУЧЕНИЕ РЕАЛЬНЫХ НОВОСТЕЙ
+        const API_KEY = '7565ffb19f1c41cd8f73e52a674a86e9'; // <--- ВСТАВЬ КЛЮЧ СЮДА
+        const NEWS_URL = `https://newsapi.org{API_KEY}`;
+
+        async function loadNews() {
+            const container = document.getElementById('news-container');
+            try {
+                const response = await fetch(NEWS_URL);
+                const data = await response.json();
+
+                if (data.status === "ok") {
+                    container.innerHTML = ""; // Очищаем текст загрузки
+                    data.articles.forEach(art => {
+                        if (!art.title || !art.urlToImage) return; // Пропускаем битые новости
+
+                        const card = `
+                            <article class="news-card">
+                                <img src="${art.urlToImage}" class="news-img" onerror="this.src='faero.jpg'">
+                                <div class="news-body">
+                                    <div class="news-title">${art.title}</div>
+                                    <p class="news-text">${art.description || "Нажмите, чтобы прочитать подробнее..."}</p>
+                                    <a href="${art.url}" target="_blank" style="color: #6eb300; font-size: 12px; font-weight: bold; text-decoration: none;">Читать источник →</a>
+                                </div>
+                            </article>
+                        `;
+                        container.innerHTML += card;
+                    });
+                } else {
+                    container.innerHTML = `<div style="color:white">Ошибка: ${data.message}</div>`;
+                }
+            } catch (e) {
+                container.innerHTML = "<div style='color:white'>Не удалось загрузить новости. Проверь API ключ!</div>";
+            }
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+
+        loadNews();
     </script>
 </body>
 </html>
