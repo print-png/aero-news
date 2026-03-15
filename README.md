@@ -1,2 +1,1 @@
-# aero-news
-vibe-code project on russian with news
+vibecoded news project, based on Meduza API
