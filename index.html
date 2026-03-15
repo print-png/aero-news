@@ -47,6 +47,24 @@ header {
 .githubBtn { padding:6px 14px; font-weight:600; font-size:14px; background:linear-gradient(#FFD700,#FFC300); border-radius:8px; border:1px solid #FFA500; color:#000; text-decoration:none; cursor:pointer; box-shadow:0 3px 6px rgba(0,0,0,0.2); transition: transform 0.15s ease, box-shadow 0.15s ease; }
 .githubBtn:hover { transform: translateY(-2px); box-shadow:0 5px 10px rgba(0,0,0,0.25); }
 
+/* Зелёная кнопка музыки */
+.musicBtn {
+  padding:6px 14px; 
+  font-weight:600; 
+  font-size:14px; 
+  background: linear-gradient(#28a745, #218838); 
+  border-radius:8px; 
+  border:1px solid #1e7e34; 
+  color:#fff; 
+  cursor:pointer; 
+  box-shadow:0 3px 6px rgba(0,0,0,0.2); 
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.musicBtn:hover { 
+  transform: translateY(-2px); 
+  box-shadow:0 5px 10px rgba(0,0,0,0.25); 
+}
+
 /* Сетка новостей */
 .newsGrid { max-width:1200px; margin:40px auto 0 auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:30px; }
 .card {
@@ -89,7 +107,11 @@ header {
     <img src="https://frutigeraeroarchive.org/images/icons/windows_vista/vista_netcenter.ico" alt="icon">
     <span class="headerTitle">AeroNews</span>
   </div>
-  <a href="https://github.com/print-png" class="githubBtn" target="_blank">GitHub</a>
+  <div style="display:flex; gap:10px; align-items:center;">
+    <a href="https://github.com/print_png" class="githubBtn" target="_blank">GitHub</a>
+    <button class="musicBtn" id="musicBtn">Музыка</button>
+  </div>
+  <audio id="bgMusic" src="music.mp3" loop></audio>
 </header>
 
 <div class="newsGrid" id="news"></div>
@@ -146,7 +168,6 @@ function renderNews() {
   });
   currentIndex += pageSize;
 
-  // Скрыть кнопку если новостей больше нет
   if(currentIndex >= allNews.length){
     document.getElementById("loadMoreBtn").style.display = 'none';
   }
@@ -169,6 +190,22 @@ modalClose.addEventListener("click", ()=>modal.style.display="none");
 window.addEventListener("click", e=>{if(e.target===modal) modal.style.display="none";});
 
 fetchNews();
+
+// Музыка
+const musicBtn = document.getElementById("musicBtn");
+const bgMusic = document.getElementById("bgMusic");
+let isPlaying = false;
+
+musicBtn.addEventListener("click", () => {
+  if(isPlaying){
+    bgMusic.pause();
+    musicBtn.textContent = "Музыка";
+  } else {
+    bgMusic.play();
+    musicBtn.textContent = "Пауза";
+  }
+  isPlaying = !isPlaying;
+});
 </script>
 
 </body>
