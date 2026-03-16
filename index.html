@@ -41,22 +41,27 @@ font-size:32px;
 text-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
-#headerClock{
-font-size:14px;
-opacity:.9;
+.header-right{
 text-align:right;
-line-height:1.3;
 display:flex;
 flex-direction:column;
 align-items:flex-end;
+}
+
+.clock{
+font-size:16px;
+opacity:.9;
+}
+
+.date{
+font-size:14px;
+opacity:.8;
 }
 
 nav{
 background:linear-gradient(to bottom,#4a4a4a,#000);
 border-bottom:4px solid #f09609;
 display:flex;
-align-items:center;
-padding:0 10px;
 }
 
 nav a{
@@ -66,7 +71,6 @@ font-size:13px;
 padding:12px 20px;
 border-right:1px solid #333;
 cursor:pointer;
-transition:.2s;
 }
 
 nav a:hover{
@@ -263,17 +267,17 @@ border-radius:0 0 8px 8px;
 
 <header>
 <div class="logo">Aero<strong>News</strong></div>
-<div id="headerClock">
-<div id="timeClock"></div>
-<div id="dateClock"></div>
+<div class="header-right">
+<div class="clock" id="clock"></div>
+<div class="date" id="date"></div>
 </div>
 </header>
 
 <nav>
 <a id="btnMain">Сначала новые</a>
 <a id="btnOld">Сначала старые</a>
-<a href="https://github.com/" target="_blank">GitHub</a>
-<a href="#" id="btnMusic">Музыка</a>
+<a id="btnGithub">GitHub</a>
+<a id="btnMusic">Музыка</a>
 </nav>
 
 <div class="main-content">
@@ -302,6 +306,8 @@ border-radius:0 0 8px 8px;
 
 </div>
 
+<audio id="musicPlayer" src="music.mp3" loop></audio>
+
 <div class="modal-overlay" id="modal">
 <div class="vista-window">
 <div class="window-header">
@@ -311,8 +317,6 @@ border-radius:0 0 8px 8px;
 <div class="window-body" id="modalText"></div>
 </div>
 </div>
-
-<audio id="musicPlayer" src="music.mp3"></audio>
 
 <script>
 let allNews=[];
@@ -369,6 +373,15 @@ document.getElementById("loadMore").onclick=renderMore;
 document.getElementById("btnMain").onclick=showMain;
 document.getElementById("btnOld").onclick=showOldNews;
 
+/* Часы с секундой и датой */
+function updateClock(){
+const now=new Date();
+document.getElementById("clock").innerText=now.toLocaleTimeString("ru-RU");
+document.getElementById("date").innerText=now.toLocaleDateString("ru-RU");
+}
+setInterval(updateClock,1000);
+updateClock();
+
 /* Левый блок: интересные факты */
 const facts=[
 "Первый сайт в интернете появился в 1991 году.",
@@ -395,28 +408,12 @@ function updateTip(){ document.getElementById("tipText").innerText=tips[tipIndex
 updateTip();
 setInterval(updateTip,30000);
 
-fetchNews();
-
 /* Музыка */
 const musicPlayer=document.getElementById("musicPlayer");
 document.getElementById("btnMusic").onclick=()=>{
-if(musicPlayer.paused){ musicPlayer.play(); } else { musicPlayer.pause(); }
+if(musicPlayer.paused){ musicPlayer.play(); }
+else{ musicPlayer.pause(); }
 };
-
-/* Часы с секундами и датой в header */
-function updateHeaderClock(){
-const now=new Date();
-const hours=String(now.getHours()).padStart(2,'0');
-const minutes=String(now.getMinutes()).padStart(2,'0');
-const seconds=String(now.getSeconds()).padStart(2,'0');
-const day=String(now.getDate()).padStart(2,'0');
-const month=String(now.getMonth()+1).padStart(2,'0');
-const year=now.getFullYear();
-document.getElementById("timeClock").innerText=`${hours}:${minutes}:${seconds}`;
-document.getElementById("dateClock").innerText=`${day}.${month}.${year}`;
-}
-setInterval(updateHeaderClock,1000);
-updateHeaderClock();
 </script>
 
 </body>
