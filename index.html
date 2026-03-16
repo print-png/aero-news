@@ -2,118 +2,285 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>AeroNewsV1</title>
+<title>AeroNews</title>
 <link rel="icon" href="favicon.ico">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-  font-family:"Segoe UI",Tahoma,sans-serif;
-  background:#4A90E2 url('background.jpg') no-repeat center top fixed;
-  background-size:cover;
-  color:#333;
+font-family:"Segoe UI",Tahoma,sans-serif;
+background:#4A90E2 url('background.jpg') no-repeat center top fixed;
+background-size:cover;
+color:#333;
 }
+
 .wrapper{
-  width:1100px;
-  margin:0 auto;
-  background:#ffffffee;
-  backdrop-filter:blur(6px);
-  box-shadow:0 0 60px rgba(0,0,0,0.7);
-  min-height:100vh;
+width:1100px;
+margin:0 auto;
+background:#ffffffee;
+backdrop-filter:blur(6px);
+box-shadow:0 0 60px rgba(0,0,0,0.7);
+min-height:100vh;
+border-radius:8px;
 }
+
 header{
-  background:linear-gradient(180deg,#6ec0ff,#1c5a8a);
-  height:90px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 30px;
-  color:white;
+background:linear-gradient(180deg,#6ec0ff,#1c5a8a);
+height:90px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+color:white;
+border-bottom:2px solid #1c5a8a;
 }
-.logo{font-size:32px;text-shadow:0 0 10px rgba(0,0,0,0.5);}
-.clock{font-size:14px;opacity:.9;}
+
+.logo{
+font-size:32px;
+text-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+
+#headerClock{
+font-size:14px;
+opacity:.9;
+text-align:right;
+line-height:1.3;
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+}
+
 nav{
-  background:linear-gradient(to bottom,#4a4a4a,#000);
-  border-bottom:4px solid #f09609;
-  display:flex;
+background:linear-gradient(to bottom,#4a4a4a,#000);
+border-bottom:4px solid #f09609;
+display:flex;
+align-items:center;
+padding:0 10px;
 }
+
 nav a{
-  color:#eee;text-decoration:none;font-size:13px;padding:12px 20px;border-right:1px solid #333;
-  cursor:pointer;
+color:#eee;
+text-decoration:none;
+font-size:13px;
+padding:12px 20px;
+border-right:1px solid #333;
+cursor:pointer;
+transition:.2s;
 }
-nav a:hover{background:rgba(255,255,255,0.15);}
+
+nav a:hover{
+background:rgba(255,255,255,0.15);
+}
+
 .main-content{
-  display:grid;
-  grid-template-columns:220px 1fr 220px;
-  gap:20px;
-  padding:25px;
+display:grid;
+grid-template-columns:220px 1fr 220px;
+gap:20px;
+padding:25px;
 }
+
 #hero-box{
-  background:linear-gradient(135deg,#f0faff,#fff);
-  border:1px solid #add8e6;
-  padding:25px;
-  border-radius:6px;
-  margin-bottom:25px;
-  transition:border 0.2s;
-  cursor:pointer;
+background:linear-gradient(135deg,#f0faff,#fff);
+border:1px solid #add8e6;
+padding:25px;
+border-radius:10px;
+margin-bottom:25px;
+transition:all .3s;
+cursor:pointer;
+box-shadow:0 4px 20px rgba(0,0,0,0.15);
 }
-#hero-box:hover{border:1.5px solid orange;}
+
+#hero-box:hover{
+border:1.5px solid orange;
+box-shadow:0 0 20px rgba(255,140,0,0.5),0 10px 30px rgba(0,0,0,0.2);
+transform:none;
+}
+
 .news-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
 }
+
 .card{
-  background:linear-gradient(#fff,#f8fbff);
-  border:1px solid #d0dbe6;
-  padding:15px;
-  cursor:pointer;
-  border-radius:6px;
-  transition:border 0.2s;
+background:linear-gradient(#fff,#f8fbff);
+border:1px solid #d0dbe6;
+padding:15px;
+cursor:pointer;
+border-radius:8px;
+transition:all .3s;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
-.card:hover{border:1.5px solid orange;}
-.card h4{color:#0066cc;font-size:14px;margin-bottom:6px;}
-.card-date{font-size:11px;color:#888;margin-bottom:6px;}
-.card p{font-size:12px;color:#555;height:50px;overflow:hidden;}
+
+.card:hover{
+border:1.5px solid orange;
+box-shadow:0 0 15px rgba(255,140,0,0.5),0 8px 20px rgba(0,0,0,0.15);
+transform:none;
+}
+
+.card h4{
+color:#0066cc;
+font-size:14px;
+margin-bottom:6px;
+}
+
+.card-date{
+font-size:11px;
+color:#888;
+margin-bottom:6px;
+}
+
+.card p{
+font-size:12px;
+color:#555;
+height:50px;
+overflow:hidden;
+}
+
 .load-more{
-  display:block;margin:30px auto;padding:12px 40px;cursor:pointer;
-  border:1px solid #777;background:#f4f4f4;font-size:14px;
+display:block;
+margin:30px auto;
+padding:12px 40px;
+cursor:pointer;
+border:1px solid #777;
+background:#f4f4f4;
+font-size:14px;
+border-radius:5px;
+box-shadow:0 2px 6px rgba(0,0,0,0.15);
+transition:.2s;
 }
-.sidebar h3{color:#1c5a8a;font-size:15px;border-bottom:1px solid #ddd;margin-bottom:12px;}
-.sidebar p{font-size:13px;line-height:1.5;color:#444;}
+
+.load-more:hover{
+background:#fff;
+box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+.sidebar h3{
+color:#1c5a8a;
+font-size:15px;
+border-bottom:1px solid #ddd;
+margin-bottom:12px;
+}
+
+.sidebar p{
+font-size:13px;
+line-height:1.5;
+color:#444;
+}
+
 .modal-overlay{
-  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:9999;
+justify-content:center;
+align-items:center;
 }
+
 .vista-window{
-  background:#fff;width:900px;max-width:90%;height:80vh;border:1px solid #1c5a8a;
-  box-shadow:0 20px 60px rgba(0,0,0,0.8);display:flex;flex-direction:column;
+background:#fff;
+width:900px;
+max-width:90%;
+height:80vh;
+border:1px solid #1c5a8a;
+border-radius:8px;
+box-shadow:0 20px 60px rgba(0,0,0,0.8),0 0 30px rgba(0,0,0,0.3);
+display:flex;
+flex-direction:column;
+transition:none;
 }
+
 .window-header{
-  background:linear-gradient(180deg,#5ba4d5,#1c5a8a);color:white;padding:10px 15px;
-  display:flex;justify-content:space-between;
+background:linear-gradient(180deg,#5ba4d5,#1c5a8a);
+color:white;
+padding:10px 60px 10px 15px;
+font-weight:600;
+position:relative;
+border-top-left-radius:8px;
+border-top-right-radius:8px;
 }
-.x-btn{background:#E81123;color:white;border:none;padding:4px 12px;cursor:pointer;}
-.window-body{padding:30px;font-size:15px;line-height:1.7;overflow-y:auto;flex:1;}
-footer{background:#f5f5f5;padding:20px;border-top:1px solid #ccc;text-align:center;font-size:11px;color:#999;}
+
+.x-btn{
+position:absolute;
+top:6px;
+right:6px;
+width:34px;
+height:20px;
+border:none;
+cursor:pointer;
+color:white;
+font-weight:bold;
+font-size:13px;
+background:linear-gradient(#ff5c5c,#c40000);
+border:1px solid #7a0000;
+border-radius:3px;
+box-shadow:
+inset 0 1px rgba(255,255,255,0.6),
+0 1px 2px rgba(0,0,0,0.5);
+transition:.15s;
+}
+
+.x-btn:hover{
+background:linear-gradient(#ff7b7b,#ff0000);
+box-shadow:
+0 0 6px rgba(255,0,0,0.7),
+inset 0 1px rgba(255,255,255,0.8);
+}
+
+.x-btn:active{
+background:linear-gradient(#b00000,#7a0000);
+transform:translateY(1px);
+}
+
+.window-body{
+padding:30px;
+font-size:15px;
+line-height:1.7;
+overflow-y:auto;
+flex:1;
+}
+
+footer{
+background:#f5f5f5;
+padding:20px;
+border-top:1px solid #ccc;
+text-align:center;
+font-size:11px;
+color:#999;
+border-radius:0 0 8px 8px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="wrapper">
+
 <header>
-<div class="logo">Aero<strong>News</strong> Meduza</div>
-<div class="clock" id="clock"></div>
+<div class="logo">Aero<strong>News</strong></div>
+<div id="headerClock">
+<div id="timeClock"></div>
+<div id="dateClock"></div>
+</div>
 </header>
 
 <nav>
 <a id="btnMain">Сначала новые</a>
 <a id="btnOld">Сначала старые</a>
+<a href="https://github.com/" target="_blank">GitHub</a>
+<a href="#" id="btnMusic">Музыка</a>
 </nav>
 
 <div class="main-content">
+
 <aside class="sidebar">
-<h3>Левый блок</h3>
-<p>не знаю</p>
+<h3>Интересный факт</h3>
+<p id="factText"></p>
 </aside>
 
 <main>
@@ -123,12 +290,16 @@ footer{background:#f5f5f5;padding:20px;border-top:1px solid #ccc;text-align:cent
 </main>
 
 <aside class="sidebar">
-<h3>я хз что здесь будет</h3>
-<p>чат джбт не смог сделать разделы, завтра доделаю</p>
+<h3>Полезный приём дня</h3>
+<p id="tipText"></p>
 </aside>
+
 </div>
 
-<footer>© 2026 AeroNews. by print-png</footer>
+<footer>
+© 2026 AeroNews. by print-png
+</footer>
+
 </div>
 
 <div class="modal-overlay" id="modal">
@@ -141,17 +312,24 @@ footer{background:#f5f5f5;padding:20px;border-top:1px solid #ccc;text-align:cent
 </div>
 </div>
 
+<audio id="musicPlayer" src="music.mp3"></audio>
+
 <script>
-let allNews=[], filteredNews=[], newsIndex=1, batch=6;
+let allNews=[];
+let filteredNews=[];
+let newsIndex=1;
+let batch=6;
 
 function strip(html){ let tmp=document.createElement("div"); tmp.innerHTML=html; return tmp.textContent||""; }
 function formatDate(date){ return new Date(date).toLocaleString("ru-RU"); }
 
 async function fetchNews(){
+try{
 const res=await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://meduza.io/rss/news");
 const data=await res.json();
 allNews=data.items;
 showMain();
+}catch(e){console.error("Ошибка при загрузке новостей", e);}
 }
 
 function renderHero(){
@@ -161,54 +339,84 @@ document.getElementById("hero-box").innerHTML=`
 <div style="font-size:12px;color:#888">${formatDate(hero.pubDate)}</div>
 <p style="margin-top:10px">${strip(hero.description).slice(0,200)}...</p>
 `;
-document.getElementById("hero-box").onclick=()=>showModal(hero.title,hero.content);
+document.getElementById("hero-box").onclick=()=>{showModal(hero.title,hero.content)};
 }
 
 function renderMore(){
 const grid=document.getElementById("grid");
 for(let i=0;i<batch;i++){
-if(newsIndex>=filteredNews.length){document.getElementById("loadMore").style.display="none";return;}
+if(newsIndex>=filteredNews.length){ document.getElementById("loadMore").style.display="none"; return; }
 const item=filteredNews[newsIndex];
-const card=document.createElement("div"); card.className="card";
-card.innerHTML=`<h4>${item.title}</h4><div class="card-date">${formatDate(item.pubDate)}</div><p>${strip(item.description).slice(0,80)}...</p>`;
-card.onclick=()=>showModal(item.title,item.content);
+const card=document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<h4>${item.title}</h4>
+<div class="card-date">${formatDate(item.pubDate)}</div>
+<p>${strip(item.description).slice(0,80)}...</p>
+`;
+card.onclick=()=>{showModal(item.title,item.content)};
 grid.appendChild(card);
 newsIndex++;
 }
 }
 
-function showMain(){
-filteredNews=[...allNews];
-newsIndex=1;
-renderHero();
-document.getElementById("grid").innerHTML="";
-renderMore();
-document.getElementById("loadMore").style.display="block";
-}
+function showMain(){ filteredNews=[...allNews]; newsIndex=1; renderHero(); document.getElementById("grid").innerHTML=""; renderMore(); document.getElementById("loadMore").style.display="block"; }
+function showOldNews(){ filteredNews=[...allNews].reverse(); newsIndex=1; renderHero(); document.getElementById("grid").innerHTML=""; renderMore(); document.getElementById("loadMore").style.display="block"; }
 
-function showOldNews(){
-filteredNews=[...allNews].reverse();
-newsIndex=1;
-renderHero();
-document.getElementById("grid").innerHTML="";
-renderMore();
-document.getElementById("loadMore").style.display="block";
-}
-
-function showModal(t,txt){
-document.getElementById("modalTitle").innerText=t;
-document.getElementById("modalText").innerHTML=txt;
-document.getElementById("modal").style.display="flex";
-}
-
-document.getElementById("modalClose").onclick=()=>{document.getElementById("modal").style.display="none";};
+function showModal(t,txt){ document.getElementById("modalTitle").innerText=t; document.getElementById("modalText").innerHTML=txt; document.getElementById("modal").style.display="flex"; }
+document.getElementById("modalClose").onclick=()=>{ document.getElementById("modal").style.display="none"; };
 document.getElementById("loadMore").onclick=renderMore;
 document.getElementById("btnMain").onclick=showMain;
 document.getElementById("btnOld").onclick=showOldNews;
 
-function updateClock(){document.getElementById("clock").innerText=new Date().toLocaleString("ru-RU");}
-setInterval(updateClock,1000); updateClock();
+/* Левый блок: интересные факты */
+const facts=[
+"Первый сайт в интернете появился в 1991 году.",
+"В Комьюнити Frutiger Aero уже 900 участников.",
+"Google обрабатывает миллиарды поисковых запросов каждый день.",
+"Самый первый браузер назывался WorldWideWeb.",
+"В интернете более миллиарда сайтов."
+];
+let factIndex=0;
+function updateFact(){ document.getElementById("factText").innerText=facts[factIndex]; factIndex++; if(factIndex>=facts.length) factIndex=0; }
+updateFact();
+setInterval(updateFact,30000);
+
+/* Правый блок: полезный приём дня */
+const tips=[
+"Используйте Ctrl+Shift+T, чтобы открыть последнюю закрытую вкладку в браузере.",
+"В Windows нажмите Win+Shift+S для быстрого скриншота нужной области.",
+"Регулярно очищайте кэш браузера для ускорения работы сайтов.",
+"Ставьте сложные пароли и храните их в менеджере паролей.",
+"Используйте вкладки браузера группами, чтобы не терять нужные сайты."
+];
+let tipIndex=0;
+function updateTip(){ document.getElementById("tipText").innerText=tips[tipIndex]; tipIndex++; if(tipIndex>=tips.length) tipIndex=0; }
+updateTip();
+setInterval(updateTip,30000);
+
 fetchNews();
+
+/* Музыка */
+const musicPlayer=document.getElementById("musicPlayer");
+document.getElementById("btnMusic").onclick=()=>{
+if(musicPlayer.paused){ musicPlayer.play(); } else { musicPlayer.pause(); }
+};
+
+/* Часы с секундами и датой в header */
+function updateHeaderClock(){
+const now=new Date();
+const hours=String(now.getHours()).padStart(2,'0');
+const minutes=String(now.getMinutes()).padStart(2,'0');
+const seconds=String(now.getSeconds()).padStart(2,'0');
+const day=String(now.getDate()).padStart(2,'0');
+const month=String(now.getMonth()+1).padStart(2,'0');
+const year=now.getFullYear();
+document.getElementById("timeClock").innerText=`${hours}:${minutes}:${seconds}`;
+document.getElementById("dateClock").innerText=`${day}.${month}.${year}`;
+}
+setInterval(updateHeaderClock,1000);
+updateHeaderClock();
 </script>
 
 </body>
