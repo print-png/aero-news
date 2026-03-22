@@ -1,223 +1,207 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>AeroNews</title>
-<link rel="icon" href="https://frutigeraeroarchive.org/images/icons/windows_vista/vista_netcenter.ico" type="image/x-icon">
-<style>
-/* --- БАЗОВЫЕ СТИЛИ --- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: "Segoe UI", Tahoma, sans-serif;
-    background: #4A90E2 url('https://frutigeraeroarchive.org/images/wallpapers/windows_7/windows_7_1.jpg') no-repeat center top fixed;
-    background-size: cover;
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-}
-.wrapper {
-    width: 1050px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 0 60px rgba(0,0,0,0.6);
-    border-left: 1px solid rgba(255,255,255,0.3);
-    border-right: 1px solid rgba(255,255,255,0.3);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+    <meta charset="UTF-8">
+    <title>AeroNews</title>
+    <link rel="icon" href="https://frutigeraeroarchive.org/images/icons/windows_vista/vista_netcenter.ico" type="image/x-icon">
+    <style>
+        /* --- БАЗОВЫЕ СТИЛИ --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: #4A90E2 url('https://frutigeraeroarchive.org/images/wallpapers/windows_7/windows_7_1.jpg') no-repeat center top fixed;
+            background-size: cover;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+        .wrapper {
+            width: 1050px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 60px rgba(0,0,0,0.6);
+            /* Убрали границы отсюда */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* --- HEADER & NAV --- */
-header { 
-    background: linear-gradient(to bottom, #5ba4d5 0%, #1c5a8a 50%, #164a73 51%, #1c5a8a 100%);
-    padding: 10px 30px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    border-bottom: 1px solid #0b2e4a;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
-}
-.logo { font-size: 36px; color: #fff; font-weight: 300; text-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; }
-.logo img { width: 64px; height: 64px; margin-right: 15px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4)); }
-.logo strong { font-weight: bold; }
+        /* --- HEADER & NAV --- */
+        header { 
+            background: linear-gradient(to bottom, #5ba4d5 0%, #1c5a8a 50%, #164a73 51%, #1c5a8a 100%);
+            padding: 10px 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid #0b2e4a;
+            /* Границы теперь здесь, чтобы они сливались с фоном */
+            border-left: 1px solid rgba(255,255,255,0.2);
+            border-right: 1px solid rgba(255,255,255,0.2);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+        .logo { font-size: 36px; color: #fff; font-weight: 300; text-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; }
+        .logo img { width: 64px; height: 64px; margin-right: 15px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4)); }
+        .logo strong { font-weight: bold; }
+        .header-clock { color: white; text-align: right; text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.5); }
+        .header-clock .time { font-size: 22px; font-weight: 300; }
+        .header-clock .date { font-size: 11px; opacity: 0.9; }
+        
+        nav { 
+            background: linear-gradient(to bottom, #4c4c4c 0%, #111 50%, #000 51%, #111 100%); 
+            border-bottom: 4px solid #f09609; 
+            display: flex; 
+            align-items: center;
+            /* И здесь тоже */
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+        }
+        nav a { 
+            color: #eee; text-decoration: none; font-size: 13px; 
+            padding: 12px 25px; border-right: 1px solid #333; cursor: pointer; 
+        }
+        nav a:hover { background: rgba(255,255,255,0.15); }
 
-.header-clock { color: white; text-align: right; text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.5); }
-.header-clock .time { font-size: 22px; font-weight: 300; }
-.header-clock .date { font-size: 11px; opacity: 0.9; }
+        /* --- CONTENT (Добавил границы сюда, чтобы контентная часть тоже была очерчена) --- */
+        .main-content { 
+            display: grid; 
+            grid-template-columns: 220px 1fr 220px; 
+            gap: 25px; 
+            padding: 25px; 
+            flex: 1;
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 { color: #1c5a8a; font-size: 16px; border-bottom: 2px solid #aec6e4; padding-bottom: 8px; margin-bottom: 15px; }
+        #hero-box { 
+            background: linear-gradient(135deg, #fff 0%, #e1f0ff 100%); 
+            border: 1px solid #add8e6; padding: 25px; 
+            margin-bottom: 25px; cursor: pointer; 
+        }
+        #hero-box h2 { color: #0033bb; font-size: 24px; font-weight: 300; }
+        #hero-box p { font-size: 13px; color: #003366; margin-top: 10px; }
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { 
+            background: linear-gradient(to bottom, #ffffff 0%, #f2f5f7 100%); 
+            border: 1px solid #d0dbe6; 
+            padding: 15px; cursor: pointer; border-radius: 0; transition: all 0.2s; box-shadow: inset 0 1px 0 #fff;
+            font-size: 13px;
+        }
+        .card:hover { 
+            border-color: #f09609; 
+            box-shadow: 0 0 8px rgba(240, 150, 9, 0.3), inset 0 1px 0 #fff;
+        }
+        .card h4 { color: #0066cc; font-size: 15px; margin-bottom: 5px; }
+        .card p { color: #003366; font-size: 12px; line-height: 1.3em; }
+        .load-more { display: block; margin: 30px auto; padding: 10px 40px; cursor: pointer; border: 1px solid #777; background: linear-gradient(#fff, #e5e5e5); font-size: 13px; }
 
-nav { 
-    background: linear-gradient(to bottom, #4c4c4c 0%, #111 50%, #000 51%, #111 100%); 
-    border-bottom: 4px solid #f09609; 
-    display: flex; 
-    align-items: center;
-}
-nav a { 
-    color: #eee; text-decoration: none; font-size: 13px; 
-    padding: 12px 25px; border-right: 1px solid #333; cursor: pointer; 
-}
-nav a:hover { background: rgba(255,255,255,0.15); }
-
-/* --- CONTENT --- */
-.main-content { display: grid; grid-template-columns: 220px 1fr 220px; gap: 25px; padding: 25px; flex: 1; }
-.sidebar h3 { color: #1c5a8a; font-size: 16px; border-bottom: 2px solid #aec6e4; padding-bottom: 8px; margin-bottom: 15px; }
-
-#hero-box { 
-    background: linear-gradient(135deg, #fff 0%, #e1f0ff 100%); 
-    border: 1px solid #add8e6; padding: 25px; 
-    margin-bottom: 25px; cursor: pointer; 
-}
-#hero-box h2 { color: #0033bb; font-size: 24px; font-weight: 300; }
-#hero-box p { font-size: 13px; color: #003366; margin-top: 10px; }
-
-.news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.card { 
-    background: linear-gradient(to bottom, #ffffff 0%, #f2f5f7 100%); 
-    border: 1px solid #d0dbe6; 
-    padding: 15px; cursor: pointer; border-radius: 0; transition: all 0.2s; box-shadow: inset 0 1px 0 #fff;
-    font-size: 13px;
-}
-.card:hover { 
-    border-color: #f09609; 
-    box-shadow: 0 0 8px rgba(240, 150, 9, 0.3), inset 0 1px 0 #fff;
-}
-.card h4 { color: #0066cc; font-size: 15px; margin-bottom: 5px; }
-.card p { color: #003366; font-size: 12px; line-height: 1.3em; }
-
-.load-more { display: block; margin: 30px auto; padding: 10px 40px; cursor: pointer; border: 1px solid #777; background: linear-gradient(#fff, #e5e5e5); font-size: 13px; }
-
-/* --- МОДАЛЬНОЕ ОКНО --- */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-.vista-window {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(25px) saturate(200%);
-    width: 880px; max-width: 95%; height: 85vh;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 25px 80px rgba(0,0,0,0.7);
-    display: flex; flex-direction: column; position: relative;
-    border-radius: 8px 8px 0 0;
-}
-.window-header {
-    background: linear-gradient(to bottom, 
-        rgba(255,255,255,0.7) 0%, 
-        rgba(255,255,255,0.1) 50%, 
-        rgba(0,0,0,0.15) 51%, 
-        rgba(255,255,255,0.2) 100%), 
-        linear-gradient(to right, #3a75a7, #1e5a99);
-    color: white; height: 32px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding-left: 12px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-    font-weight: 500; font-size: 13px; border-radius: 7px 7px 0 0;
-}
-
-/* --- КНОПКИ УПРАВЛЕНИЯ КАК НА ФОТО --- */
-.window-controls { 
-    display: flex; 
-    height: 100%; 
-    align-items: flex-start;
-    padding-right: 4px;
-}
-
-.win-btn {
-    width: 30px; height: 20px;
-    margin-top: 1px;
-    border: 1px solid rgba(0,0,0,0.5);
-    border-top: none;
-    background: linear-gradient(to bottom, 
-        rgba(255,255,255,0.3) 0%, 
-        rgba(255,255,255,0.05) 50%, 
-        rgba(0,0,0,0.1) 51%, 
-        rgba(255,255,255,0.1) 100%);
-    color: white; font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; position: relative;
-    transition: all 0.2s;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-}
-
-/* Эффект свечения при наведении (как на фото) */
-.win-btn:hover {
-    filter: brightness(1.2);
-    box-shadow: 0 0 12px #3fb3ff, inset 0 1px 0 rgba(255,255,255,0.3);
-    background-color: rgba(63, 179, 255, 0.4);
-    border-color: #004d80;
-}
-
-/* Кнопка закрытия (красная с оранжевым свечением) */
-.btn-close {
-    width: 46px; 
-    margin-left: 1px;
-    background: linear-gradient(to bottom, 
-        #e99285 0%, 
-        #d8503d 50%, 
-        #c33a28 51%, 
-        #d14d3b 100%) !important;
-    border-radius: 0 0 4px 4px;
-    border: 1px solid #702a1f !important;
-    border-top: none !important;
-}
-.btn-close:hover {
-    filter: brightness(1.1);
-    background-color: #ff5c43 !important;
-    box-shadow: 0 0 15px #ff7a21, inset 0 1px 0 rgba(255,255,255,0.4) !important;
-    border-color: #4d150d !important;
-}
-.btn-close::after {
-    content: '✕';
-    font-size: 12px;
-    font-weight: bold;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-}
-
-.window-body { padding: 30px; overflow-y: auto; flex: 1; background: #fff; color: #333; line-height: 1.6; }
-.window-body h1 { color: #1c5a8a; margin-bottom: 20px; font-size: 24px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-
-footer { background: #f0f0f0; padding: 15px; border-top: 1px solid #ccc; text-align: center; font-size: 11px; }
-</style>
+        /* --- МОДАЛЬНОЕ ОКНО --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .vista-window {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(25px) saturate(200%);
+            width: 880px; max-width: 95%; height: 85vh;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.7);
+            display: flex; flex-direction: column; position: relative;
+        }
+        .window-header {
+            background: linear-gradient(to bottom, 
+                rgba(255,255,255,0.7) 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(0,0,0,0.15) 51%, 
+                rgba(255,255,255,0.2) 100%), 
+                linear-gradient(to right, #3a75a7, #1e5a99);
+            color: white; height: 32px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding-left: 12px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+            font-weight: 500; font-size: 13px; border-radius: 7px 7px 0 0;
+        }
+        .window-controls { display: flex; height: 100%; align-items: flex-start; padding-right: 4px; }
+        .win-btn {
+            width: 30px; height: 20px;
+            margin-top: 1px;
+            border: 1px solid rgba(0,0,0,0.5);
+            border-top: none;
+            background: linear-gradient(to bottom, 
+                rgba(255,255,255,0.3) 0%, 
+                rgba(255,255,255,0.05) 50%, 
+                rgba(0,0,0,0.1) 51%, 
+                rgba(255,255,255,0.1) 100%);
+            color: white; font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; position: relative;
+            transition: all 0.2s;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .win-btn:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 12px #3fb3ff, inset 0 1px 0 rgba(255,255,255,0.3);
+            background-color: rgba(63, 179, 255, 0.4);
+            border-color: #004d80;
+        }
+        .btn-close {
+            width: 46px; 
+            margin-left: 1px;
+            background: linear-gradient(to bottom, #e99285 0%, #d8503d 50%, #c33a28 51%, #d14d3b 100%) !important;
+            border-radius: 0 0 4px 4px;
+            border: 1px solid #702a1f !important;
+            border-top: none !important;
+        }
+        .btn-close:hover {
+            filter: brightness(1.1);
+            background-color: #ff5c43 !important;
+            box-shadow: 0 0 15px #ff7a21, inset 0 1px 0 rgba(255,255,255,0.4) !important;
+            border-color: #4d150d !important;
+        }
+        .btn-close::after { content: '✕'; font-size: 12px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .window-body { padding: 30px; overflow-y: auto; flex: 1; background: #fff; color: #333; line-height: 1.6; }
+        .window-body h1 { color: #1c5a8a; margin-bottom: 20px; font-size: 24px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        footer { 
+            background: #f0f0f0; padding: 15px; border-top: 1px solid #ccc; text-align: center; font-size: 11px; 
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
-
 <div class="wrapper">
-<header>
-    <div class="logo">
-        <img src="https://frutigeraeroarchive.org/images/icons/windows_vista/vista_netcenter.ico" alt="logo">
-        Aero<strong>News</strong>
+    <header>
+        <div class="logo">
+            <img src="https://frutigeraeroarchive.org/images/icons/windows_vista/vista_netcenter.ico" alt="logo">
+            Aero<strong>News</strong>
+        </div>
+        <div class="header-clock">
+            <div class="time" id="timeDisplay">00:00:00</div>
+            <div class="date" id="dateDisplay">Дата</div>
+        </div>
+    </header>
+    <nav>
+        <a id="btnMain">Новые новости</a>
+        <a id="btnOld">Старые новости</a>
+        <a id="btnMusic">♫ Музыка</a>
+        <a id="btnGitHub" target="_blank" href="https://github.com/print-png">GitHub</a>
+    </nav>
+    <div class="main-content">
+        <aside class="sidebar">
+            <h3>Интересный факт</h3>
+            <p id="factBox">Загрузка фактов...</p>
+        </aside>
+        <main>
+            <div id="hero-box"></div>
+            <div class="news-grid" id="grid"></div>
+            <button id="loadMore" class="load-more">Показать еще</button>
+        </main>
+        <aside class="sidebar">
+            <h3>Совет для Windows</h3>
+            <p id="hackBox">Загрузка советов...</p>
+        </aside>
     </div>
-    <div class="header-clock">
-        <div class="time" id="timeDisplay">00:00:00</div>
-        <div class="date" id="dateDisplay">Дата</div>
-    </div>
-</header>
-
-<nav>
-    <a id="btnMain">Новые новости</a>
-    <a id="btnOld">Старые новости</a>
-    <a id="btnMusic">♫ Музыка</a>
-    <a id="btnGitHub" target="_blank" href="https://github.com/print-png">GitHub</a>
-</nav>
-
-<div class="main-content">
-    <aside class="sidebar">
-        <h3>Интересный факт</h3>
-        <p id="factBox">Загрузка фактов...</p>
-    </aside>
-
-    <main>
-        <div id="hero-box"></div>
-        <div class="news-grid" id="grid"></div>
-        <button id="loadMore" class="load-more">Показать еще</button>
-    </main>
-
-    <aside class="sidebar">
-        <h3>Совет для Windows</h3>
-        <p id="hackBox">Загрузка советов...</p>
-    </aside>
-</div>
-
-<footer>© 2026 AeroNews Media</footer>
+    <footer>© 2026 AeroNews Media</footer>
 </div>
 
 <div class="modal-overlay" id="modal">
@@ -306,7 +290,11 @@ document.getElementById("btnOld").onclick = () => {
     renderHero(); 
     renderMore(); 
 };
-document.getElementById("btnMusic").onclick = () => { const a = document.getElementById("music"); a.paused ? a.play() : a.pause(); };
+
+document.getElementById("btnMusic").onclick = () => { 
+    const a = document.getElementById("music"); 
+    a.paused ? a.play() : a.pause(); 
+};
 
 setInterval(() => {
     const now = new Date();
@@ -335,9 +323,9 @@ function updateSidebars() {
     document.getElementById("factBox").innerText = facts[Math.floor(Math.random() * facts.length)];
     document.getElementById("hackBox").innerText = hacks[Math.floor(Math.random() * hacks.length)];
 }
+
 updateSidebars();
 setInterval(updateSidebars, 20000);
-
 fetchNews();
 </script>
 </body>
